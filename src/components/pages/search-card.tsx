@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface SearchCardProps {
   searchTerm: string;
@@ -16,7 +16,7 @@ export default function SearchCard({ searchTerm, setSearchTerm, handleSearch }: 
         value={searchTerm}
         onChangeText={setSearchTerm}
       />
-      <Button title="Pesquisar" onPress={handleSearch} />
+      <TouchableOpacity style={styles.button}  onPress={handleSearch} />
     </View>
   );
 }
@@ -35,4 +35,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
     paddingHorizontal: 8,
   },
+
+  button:{
+    
+  }
 });
