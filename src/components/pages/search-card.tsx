@@ -16,7 +16,9 @@ export default function SearchCard({ searchTerm, setSearchTerm, handleSearch }: 
         value={searchTerm}
         onChangeText={setSearchTerm}
       />
-      <TouchableOpacity style={styles.button}  onPress={handleSearch} />
+      <View>
+        <TouchableOpacity style={styles.button} onPress={handleSearch} />
+      </View>
     </View>
   );
 }
@@ -34,9 +36,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginRight: 8,
     paddingHorizontal: 8,
+    color: '"000',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 
-  button:{
-    
+  button: {
+    padding: 10,
+    borderRadius: 50,
+    backgroundColor: 'blue',
+    width: 50,
+    height: 50,
+
   }
 });
