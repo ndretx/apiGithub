@@ -1,4 +1,4 @@
-export default class GitEntiy {
+export default class GitEntity {
     
     id: string;
     userName: string;
