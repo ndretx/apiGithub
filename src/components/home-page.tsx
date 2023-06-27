@@ -6,8 +6,10 @@ import { Image } from 'expo-image'
 
 export default function HomePage() {
 
+    const [searchText, setSearchText] = useState("");
     const [user, setUser] = useState<GitEntiy[]>([])
     function handleSearch(event) {
+        
         var requestOptions = {
             method: 'GET',
 
@@ -17,6 +19,7 @@ export default function HomePage() {
             .then(response => response.json())
             .then(result => {
                 const userList: GitEntiy[] = result.map(item => ({
+                    
                     userName: item.login,
                     avatarUrl: item.avatar_url,
                     repoUrl: item.repo_url,
@@ -32,10 +35,13 @@ export default function HomePage() {
             <TextInput
                 placeholder="Digite o nome do usuário"
                 style={styles.input}
-                onChange={handleSearch}
+                value={searchText}
+                onChangeText={text => setSearchText(text)}
+
             />
             <View>
-                <TouchableOpacity style={styles.button} onPress={handleSearch} />
+                <TouchableOpacity style={styles.button} onPress={ handleSearch}
+                />
             </View>
             <FlatList renderItem={({ item }) => (
                 <View style={styles.container}>
@@ -76,7 +82,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginRight: 8,
         paddingHorizontal: 8,
-        color: '"000',
+        color: 'black',
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
