@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 interface SearchCardProps {
   searchTerm: string;
@@ -16,9 +16,11 @@ export default function SearchCard({ searchTerm, setSearchTerm, handleSearch }: 
         value={searchTerm}
         onChangeText={setSearchTerm}
       />
-      <View>
-        <TouchableOpacity style={styles.button} onPress={handleSearch} />
-      </View>
+
+      <TouchableOpacity style={styles.button} onPress={handleSearch}>
+        <Text style={styles.buttonText}>Search</Text>
+      </TouchableOpacity>
+
     </View>
   );
 }
@@ -27,27 +29,38 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 16,
+    
   },
   input: {
-    flex: 1,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginRight: 8,
+    height: 30,
+    width: 250,
+    borderRadius: 30,
+    marginHorizontal: 16,
     paddingHorizontal: 8,
     color: '"000',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
 
   button: {
-    padding: 10,
-    borderRadius: 50,
-    backgroundColor: 'blue',
-    width: 50,
-    height: 50,
+    padding: 8,
+    borderRadius: 30,
+    backgroundColor: '#FFF',
+    width: 60,
+    height: 30,
 
-  }
+  },
+
+  buttonText: {
+    color: 'black',
+    fontSize: 10,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
 });
