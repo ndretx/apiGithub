@@ -1,13 +1,25 @@
 import React from "react";
 import { Text, View, StyleSheet, TextInput, FlatList, TouchableOpacity } from "react-native";
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import GitEntity from "../entity/git-entities";
-import {Image} from 'expo-image'
+import {Image} from 'expo-image';
 
-interface UserDetailsPageProps {
-  user: GitEntity;
-}
+type RootStackParamList = {
+  Home: undefined;
+  UserDetails: { user: GitEntity };
+};
 
-export default function UserDetailsPage({ user }: UserDetailsPageProps) {
+type UserDetailsScreenRouteProp = RouteProp<RootStackParamList, 'UserDetails'>;
+type UserDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'UserDetails'>;
+
+type Props = {
+  route: UserDetailsScreenRouteProp;
+  navigation: UserDetailsScreenNavigationProp;
+};
+
+export default function UserDetailsPage({ route, navigation }: Props) {
+  const { user } = route.params;
   const [searchRepoText, setSearchRepoText] = React.useState("");
   const [repos, setRepos] = React.useState<string[]>([]);
 
@@ -59,9 +71,10 @@ export default function UserDetailsPage({ user }: UserDetailsPageProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: '15%',
+    marginTop: 1,
     backgroundColor: "#333",
     alignItems: "center",
+    justifyContent: 'center',
   },
   userInfo: {
     flexDirection: "row",
@@ -74,38 +87,47 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginLeft: 10,
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    margin: 10,
   },
   input: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 20,
-    marginVertical: 20,
+    marginHorizontal: 30,
+    marginVertical: 10,
     backgroundColor: '#f5f5f5',
-    width: 'auto',
+    width: 350,
+    height: 50,
     borderRadius: 20,
     fontSize: 20,
+    alignItems: 'center',
   },
   inputText: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 12,
+    fontWeight: "bold",
+    marginHorizontal: 20,
   },
   button: {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     backgroundColor: "#4078c0",
-    width: 100,
-    height: 50,
+    width: 70,
+    height: 40,
     marginHorizontal: 10,
     marginVertical: 10,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: "bold",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   repoName: {
     fontSize: 16,

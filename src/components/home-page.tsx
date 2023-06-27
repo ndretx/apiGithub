@@ -1,22 +1,14 @@
 import React, { useState } from "react";
-import { Entypo } from '@expo/vector-icons';
-import {
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  FlatList,
-  Image
-} from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, Image } from "react-native";
 import GitEntity from "../entity/git-entities";
-import UserDetailsPage from "./user-detail-page";
 
+interface Props {
+  navigation: any;
+}
 
-export default function HomePage() {
+export default function HomePage(props: Props) {
   const [searchText, setSearchText] = useState("");
   const [user, setUser] = useState<GitEntity[]>([]);
-  const [selectedUser, setSelectedUser] = useState<GitEntity | null>(null);
 
   function handleSearch() {
     if (searchText.trim() === "") {
@@ -47,11 +39,7 @@ export default function HomePage() {
   }
 
   function handleUserPress(selectedUser: GitEntity) {
-    setSelectedUser(selectedUser);
-  }
-
-  if (selectedUser) {
-    return <UserDetailsPage user={selectedUser} />;
+    props.navigation.navigate('UserDetails', { user: selectedUser });
   }
 
   return (
@@ -64,7 +52,7 @@ export default function HomePage() {
           onChangeText={(text) => setSearchText(text)}
         />
         <TouchableOpacity style={styles.button} onPress={handleSearch}>
-          <Entypo name="magnifying-glass" size={24} color="white" />
+          <Text style={styles.buttonText}>Pesquisar</Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -84,56 +72,75 @@ export default function HomePage() {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: '15%',
+    marginTop: 1,
     backgroundColor: "#333",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 20,
-    marginVertical: 20,
+    marginHorizontal: 30,
+    marginVertical: 10,
     backgroundColor: '#f5f5f5',
-    width: 'auto',
+    width: 350,
+    height: 50,
     borderRadius: 20,
     fontSize: 20,
+    alignItems: 'center',
+  
   },
   inputText: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 12,
+    fontWeight: "bold",
+    marginHorizontal: 20,
   },
   button: {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     backgroundColor: "#4078c0",
-    width: 80,
-    height: 50,
+    width: 70,
+    height: 40,
     marginHorizontal: 10,
     marginVertical: 10,
   },
+  buttonText: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "bold",
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   containerList: {
     flexDirection: 'row',
-    marginHorizontal: 20,
     marginVertical: 20,
     backgroundColor: '#333',
     borderColor: '#fafafa',
-    borderWidth: 0.5,
-    width: 'auto',
+    borderWidth: 0.8,
+    width: 250,
+    height: 50,
     borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   username: {
-    fontSize: 20,
+    fontSize: 12,
     fontWeight: "bold",
-    marginVertical: 20,
+    marginVertical: 15,
     color: "#4078c0",
   },
   avatar: {
-    marginHorizontal: 20,
-    marginVertical: 15,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    margin: 10,
   },
 });
