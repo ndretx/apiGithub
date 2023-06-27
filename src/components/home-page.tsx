@@ -10,10 +10,13 @@ import {
   Image
 } from "react-native";
 import GitEntity from "../entity/git-entities";
+import UserDetailsPage from "./user-detail-page";
+
 
 export default function HomePage() {
   const [searchText, setSearchText] = useState("");
   const [user, setUser] = useState<GitEntity[]>([]);
+  const [selectedUser, setSelectedUser] = useState<GitEntity | null>(null);
 
   function handleSearch() {
     if (searchText.trim() === "") {
@@ -43,28 +46,36 @@ export default function HomePage() {
       .catch((error) => console.log("error", error));
   }
 
+  function handleUserPress(selectedUser: GitEntity) {
+    setSelectedUser(selectedUser);
+  }
+
+  if (selectedUser) {
+    return <UserDetailsPage user={selectedUser} />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.input}>
-      <TextInput
-        placeholder="Digite o nome do usuário"
-        style={styles.input}
-        value={searchText}
-        onChangeText={(text) => setSearchText(text)}
-      />
-      
+        <TextInput
+          placeholder="Digite o nome do usuário"
+          style={styles.inputText}
+          value={searchText}
+          onChangeText={(text) => setSearchText(text)}
+        />
         <TouchableOpacity style={styles.button} onPress={handleSearch}>
-        <Entypo name="magnifying-glass" size={24} color="white" />
+          <Entypo name="magnifying-glass" size={24} color="white" />
         </TouchableOpacity>
       </View>
       <FlatList
         renderItem={({ item }) => (
-          <View style={styles.containerList}>
+          <TouchableOpacity
+            style={styles.containerList}
+            onPress={() => handleUserPress(item)}
+          >
             <Image source={{ uri: item.avatarUrl }} style={styles.avatar} />
             <Text style={styles.username}>{item.userName}</Text>
-            
-            
-          </View>
+          </TouchableOpacity>
         )}
         data={user}
         keyExtractor={(item) => item?.id?.toString() || ""}
@@ -80,19 +91,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#333",
   },
   input: {
-    flexDirection:'row',
-    justifyContent:'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginHorizontal: 20,
     marginVertical: 20,
     backgroundColor: '#f5f5f5',
     width: 'auto',
     borderRadius: 20,
     fontSize: 20,
-    
+  },
+  inputText: {
+    flex: 1,
   },
   button: {
     justifyContent: 'center',
-    alignItems:'center',
+    alignItems: 'center',
     borderRadius: 10,
     backgroundColor: "#4078c0",
     width: 80,
@@ -100,32 +113,27 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 10,
   },
-  containerList:{
-    flexDirection:'row',
+  containerList: {
+    flexDirection: 'row',
     marginHorizontal: 20,
     marginVertical: 20,
     backgroundColor: '#333',
-    borderColor:'#fafafa',
+    borderColor: '#fafafa',
     borderWidth: 0.5,
     width: 'auto',
     borderRadius: 8,
-
   },
- 
   username: {
     fontSize: 20,
     fontWeight: "bold",
-    marginVertical :20,
-    color:"#4078c0",
-    
+    marginVertical: 20,
+    color: "#4078c0",
   },
-  
   avatar: {
     marginHorizontal: 20,
-    marginVertical :15,
+    marginVertical: 15,
     width: 40,
     height: 40,
     borderRadius: 20,
   },
-  
 });
