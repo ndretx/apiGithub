@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Entypo } from '@expo/vector-icons';
 import {
   Text,
   TextInput,
@@ -44,20 +45,25 @@ export default function HomePage() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.input}>
       <TextInput
         placeholder="Digite o nome do usuário"
         style={styles.input}
         value={searchText}
         onChangeText={(text) => setSearchText(text)}
       />
-      <View>
-        <TouchableOpacity style={styles.button} onPress={handleSearch} />
+      
+        <TouchableOpacity style={styles.button} onPress={handleSearch}>
+        <Entypo name="magnifying-glass" size={24} color="white" />
+        </TouchableOpacity>
       </View>
       <FlatList
         renderItem={({ item }) => (
-          <View style={styles.container}>
-            <Text style={styles.username}>{item.userName}</Text>
+          <View style={styles.containerList}>
             <Image source={{ uri: item.avatarUrl }} style={styles.avatar} />
+            <Text style={styles.username}>{item.userName}</Text>
+            
+            
           </View>
         )}
         data={user}
@@ -69,40 +75,57 @@ export default function HomePage() {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    backgroundColor: "#fff",
+    flex: 1,
+    marginTop: '15%',
+    backgroundColor: "#333",
+  },
+  input: {
+    flexDirection:'row',
+    justifyContent:'space-between',
+    marginHorizontal: 20,
+    marginVertical: 20,
+    backgroundColor: '#f5f5f5',
+    width: 'auto',
+    borderRadius: 20,
+    fontSize: 20,
+    
+  },
+  button: {
+    justifyContent: 'center',
+    alignItems:'center',
+    borderRadius: 10,
+    backgroundColor: "#4078c0",
+    width: 80,
+    height: 50,
+    marginHorizontal: 10,
+    marginVertical: 10,
+  },
+  containerList:{
+    flexDirection:'row',
+    marginHorizontal: 20,
+    marginVertical: 20,
+    backgroundColor: '#333',
+    borderColor:'#fafafa',
+    borderWidth: 0.5,
+    width: 'auto',
     borderRadius: 8,
-    marginBottom: 8,
+
   },
+ 
   username: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
-    marginRight: 8,
+    marginVertical :20,
+    color:"#4078c0",
+    
   },
+  
   avatar: {
+    marginHorizontal: 20,
+    marginVertical :15,
     width: 40,
     height: 40,
     borderRadius: 20,
   },
-  input: {
-    flex: 1,
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginRight: 8,
-    paddingHorizontal: 8,
-    color: "black",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  button: {
-    padding: 10,
-    borderRadius: 50,
-    backgroundColor: "blue",
-    width: 50,
-    height: 50,
-  },
+  
 });
