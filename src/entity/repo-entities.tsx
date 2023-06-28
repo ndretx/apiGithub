@@ -9,4 +9,5 @@ export default class RepoEntity {
     language: string;
     forks: number;
     defaultBranch: string;
+    description: string;
 }

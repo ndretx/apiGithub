@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 const UserDetailsPage = ({ route }) => {
   const { user } = route.params;
   const [searchText, setSearchText] = useState('');
   const [repositories, setRepositories] = useState([]);
   const [searchedRepositories, setSearchedRepositories] = useState([]);
+  const { repository } = route.params;
+  const navigation = useNavigation();
 
   function handleSearch() {
     if (searchText.trim() === '') {
@@ -21,7 +26,7 @@ const UserDetailsPage = ({ route }) => {
       method: 'GET',
       headers: {
         Accept: 'application/vnd.github.v3+json',
-        Authorization: 'Bearer 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', 
+        Authorization: 'Bearer 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', // Replace with your GitHub access token
       },
     };
 
@@ -42,14 +47,16 @@ const UserDetailsPage = ({ route }) => {
             defaultBranch: repo.default_branch,
           }));
 
-          setRepositories(repositoriesData);
           filterRepositories(repositoriesData);
         } else {
-          setRepositories([]);
           filterRepositories([]);
         }
       })
       .catch((error) => console.log('Error:', error));
+  }
+  function handleRepositoryPress(repository) {
+    // Navegar para a tela RepositoryDetailsPage com os detalhes do repositório
+    navigation.navigate('RepositoryDetailsPage', { repository });
   }
 
   function filterRepositories(repositoriesData) {
@@ -58,6 +65,7 @@ const UserDetailsPage = ({ route }) => {
     );
     setSearchedRepositories(filteredRepositories);
   }
+
 
   return (
     <View style={styles.container}>
@@ -71,6 +79,7 @@ const UserDetailsPage = ({ route }) => {
           value={searchText}
           onChangeText={(text) => setSearchText(text)}
         />
+
         <TouchableOpacity style={styles.button} onPress={handleSearch}>
           <Text style={styles.buttonText}>Search</Text>
         </TouchableOpacity>
@@ -79,10 +88,11 @@ const UserDetailsPage = ({ route }) => {
       <FlatList
         data={searchedRepositories}
         renderItem={({ item }) => (
-          <View style={styles.repoList}>
-            <Text style={styles.repoName}>{item.name}</Text>
-            
-          </View>
+          <TouchableOpacity onPress={() => handleRepositoryPress(repositories)}>
+            <View style={styles.repoList}>
+              <Text style={styles.repoName}>{item.name}</Text>
+            </View>
+          </TouchableOpacity>
         )}
         keyExtractor={(item) => item.id.toString()}
       />
