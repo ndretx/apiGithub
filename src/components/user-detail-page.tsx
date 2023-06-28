@@ -21,7 +21,7 @@ const UserDetailsPage = ({ route }) => {
       method: 'GET',
       headers: {
         Accept: 'application/vnd.github.v3+json',
-        Authorization: 'Bearer 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', // Replace with your GitHub access token
+        Authorization: 'Bearer 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', 
       },
     };
 
@@ -81,10 +81,12 @@ const UserDetailsPage = ({ route }) => {
         renderItem={({ item }) => (
           <View style={styles.repoList}>
             <Text style={styles.repoName}>{item.name}</Text>
+            
           </View>
         )}
         keyExtractor={(item) => item.id.toString()}
       />
+
     </View>
   );
 };
