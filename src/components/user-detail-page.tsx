@@ -1,35 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-
-
-const UserDetailsPage = ({ route }) => {
+const UserDetailsPage = ({ route, navigation }) => {
   const { user } = route.params;
   const [searchText, setSearchText] = useState('');
   const [repositories, setRepositories] = useState([]);
   const [searchedRepositories, setSearchedRepositories] = useState([]);
-  const { repository } = route.params;
-  const navigation = useNavigation();
+
+  useEffect(() => {
+    handleSearch();
+  }, []);
 
   function handleSearch() {
-    if (searchText.trim() === '') {
-      // Perform action when search is empty
-      return;
-    }
-
-    // Perform action when search is not empty
     console.log(`Searching repositories for user: ${user.userName}`);
-    console.log(`Search text: ${searchText}`);
 
     const requestOptions = {
       method: 'GET',
       headers: {
         Accept: 'application/vnd.github.v3+json',
-        Authorization: 'Bearer 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', // Replace with your GitHub access token
+        Authorization: 'Bearer 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', // Replace with your GitHub access token
       },
     };
-
     fetch(`https://api.github.com/users/${user.userName}/repos`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
@@ -47,16 +38,14 @@ const UserDetailsPage = ({ route }) => {
             defaultBranch: repo.default_branch,
           }));
 
+          setRepositories(repositoriesData);
           filterRepositories(repositoriesData);
         } else {
-          filterRepositories([]);
+          setRepositories([]);
+          setSearchedRepositories([]);
         }
       })
       .catch((error) => console.log('Error:', error));
-  }
-  function handleRepositoryPress(repository) {
-    // Navegar para a tela RepositoryDetailsPage com os detalhes do repositório
-    navigation.navigate('RepositoryDetailsPage', { repository });
   }
 
   function filterRepositories(repositoriesData) {
@@ -66,6 +55,9 @@ const UserDetailsPage = ({ route }) => {
     setSearchedRepositories(filteredRepositories);
   }
 
+  function handleUserPress(selectedUser) {
+    navigation.navigate('RepositoryDetailsPage', { user: selectedUser });
+  }
 
   return (
     <View style={styles.container}>
@@ -88,7 +80,7 @@ const UserDetailsPage = ({ route }) => {
       <FlatList
         data={searchedRepositories}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handleRepositoryPress(repositories)}>
+          <TouchableOpacity onPress={() => handleUserPress(item)}>
             <View style={styles.repoList}>
               <Text style={styles.repoName}>{item.name}</Text>
             </View>
@@ -96,7 +88,6 @@ const UserDetailsPage = ({ route }) => {
         )}
         keyExtractor={(item) => item.id.toString()}
       />
-
     </View>
   );
 };
@@ -164,6 +155,16 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginVertical: 5,
     width: 350,
+  },
+  containerList: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginVertical: 5,
+    paddingVertical: 10,
+    width: 350,
+    borderRadius: 10,
+    backgroundColor: '#f5f5f5',
   },
 });
 
