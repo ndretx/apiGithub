@@ -10,4 +10,5 @@ export default class RepoEntity {
     forks: number;
     defaultBranch: string;
     descripiton: string;
+    avatarUrl: string;
 }

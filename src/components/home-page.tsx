@@ -1,30 +1,26 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, Image } from "react-native";
-import GitEntity from "../entity/git-entities";
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, Image } from 'react-native';
 
-interface Props {
-  navigation: any;
-}
 
-export default function HomePage(props: Props) {
-  const [searchText, setSearchText] = useState("");
-  const [user, setUser] = useState<GitEntity[]>([]);
+const HomePage = ({ navigation }) => {
+  const [searchText, setSearchText] = useState('');
+  const [user, setUser] = useState([]);
 
   function handleSearch() {
-    if (searchText.trim() === "") {
+    if (searchText.trim() === '') {
       setUser([]);
       return;
     }
 
     const requestOptions = {
-      method: "GET",
+      method: 'GET',
     };
 
     fetch(`https://api.github.com/users/${searchText}`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.login) {
-          const userObj: GitEntity = {
+          const userObj = {
             id: result.id,
             userName: result.login,
             avatarUrl: result.avatar_url,
@@ -35,11 +31,11 @@ export default function HomePage(props: Props) {
           setUser([]);
         }
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => console.log('error', error));
   }
 
-  function handleUserPress(selectedUser: GitEntity) {
-    props.navigation.navigate('UserDetails', { user: selectedUser });
+  function handleUserPress(selectedUser) {
+    navigation.navigate('UserDetails', { user: selectedUser });
   }
 
   return (
@@ -57,33 +53,29 @@ export default function HomePage(props: Props) {
       </View>
       <FlatList
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.containerList}
-            onPress={() => handleUserPress(item)}
-          >
+          <TouchableOpacity style={styles.containerList} onPress={() => handleUserPress(item)}>
             <Image source={{ uri: item.avatarUrl }} style={styles.avatar} />
             <Text style={styles.username}>{item.userName}</Text>
           </TouchableOpacity>
         )}
         data={user}
-        keyExtractor={(item) => item?.id?.toString() || ""}
+        keyExtractor={(item) => item?.id?.toString() || ''}
       />
     </View>
   );
-}
-
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 1,
-    backgroundColor: "#333",
+    backgroundColor: '#333',
     alignItems: 'center',
     justifyContent: 'center',
   },
   input: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 30,
     marginVertical: 10,
     backgroundColor: '#f5f5f5',
@@ -92,55 +84,50 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     fontSize: 20,
     alignItems: 'center',
-  
   },
   inputText: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginHorizontal: 20,
   },
   button: {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: "#4078c0",
-    width: 70,
-    height: 40,
+    backgroundColor: '#4078c0',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     marginHorizontal: 10,
-    marginVertical: 10,
   },
   buttonText: {
-    color: "#fff",
-    fontSize: 12,
-    fontWeight: "bold",
-    alignItems: 'center',
-    justifyContent: 'center',
+    color: '#fff',
+    fontSize: 14,
   },
   containerList: {
     flexDirection: 'row',
-    marginVertical: 20,
-    backgroundColor: '#333',
-    borderColor: '#fafafa',
-    borderWidth: 0.8,
-    width: 250,
-    height: 50,
-    borderRadius: 8,
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  username: {
-    fontSize: 12,
-    fontWeight: "bold",
-    marginVertical: 15,
-    color: "#4078c0",
+    marginVertical: 5,
+    paddingVertical: 10,
+    width: 350,
+    borderRadius: 10,
+    backgroundColor: '#f5f5f5',
   },
   avatar: {
-    width: 30,
-    height: 30,
-    borderRadius: 50,
-    margin: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginLeft: 10,
+  },
+  username: {
+    marginLeft: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
   },
 });
+
+export default HomePage;
